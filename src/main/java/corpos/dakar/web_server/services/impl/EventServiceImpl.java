@@ -1,6 +1,7 @@
 package corpos.dakar.web_server.services.impl;
 
 import corpos.dakar.web_server.data.entites.Event;
+import corpos.dakar.web_server.data.entites.EventTicket;
 import corpos.dakar.web_server.data.repositories.EventRepository;
 import corpos.dakar.web_server.services.IEventService;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +23,27 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public Page<Event> findAll(Pageable pageable) {
-        return eventRepository.findAll(pageable);
+        return eventRepository.findAllByIsActiveTrue(pageable);
     }
 
     @Override
     public List<Event> findAll() {
-        return eventRepository.findAll();
+        return eventRepository.findAllByIsActiveTrue();
     }
 
     @Override
     public Optional<Event> show(Long dataID) {
         return eventRepository.findById(dataID);
+    }
+
+    @Override
+    public int delete(Long dataID) {
+        Event event = show(dataID).orElse(null);
+        if(event != null) {
+            event.setIsActive(false);
+            eventRepository.save(event);
+            return 1;
+        }
+        return 0;
     }
 }

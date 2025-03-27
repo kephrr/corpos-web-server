@@ -10,4 +10,5 @@ public interface IServiceCore<T,ID> {
     Page<T> findAll(Pageable pageable);
     List<T> findAll();
     Optional<T> show(ID dataID);
+    int delete(ID dataID);
 }

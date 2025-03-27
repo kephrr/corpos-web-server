@@ -1,16 +1,37 @@
 package corpos.dakar.web_server.api.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import corpos.dakar.web_server.api.dto.request.EventCreateDto;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 public interface EventController {
     @GetMapping("/")
-    String index();
+    Map<Object, Object> index();
+
+    @GetMapping("/paginate")
+    Map<Object, Object> pages(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    );
 
     @GetMapping("/{id}")
-    String show(@PathVariable int id);
+    Map<Object, Object> show(@PathVariable Long id);
 
     @PostMapping("/")
-    String create();
+    Map<Object, Object> create(
+            @Valid @RequestBody EventCreateDto eventCreateDto,
+            BindingResult bindingResult
+            );
+
+    @GetMapping("/delete/{id}")
+    Map<Object, Object> delete(@PathVariable Long id);
 }
+
+
+
+
+
+

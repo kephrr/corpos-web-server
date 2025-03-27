@@ -21,16 +21,35 @@ public class EventTicketServiceImpl implements IEventTicketService {
 
     @Override
     public Page<EventTicket> findAll(Pageable pageable) {
-        return eventTicketRepository.findAll(pageable);
+        return eventTicketRepository.findAllByIsActiveTrue(pageable);
     }
 
     @Override
     public List<EventTicket> findAll() {
-        return eventTicketRepository.findAll();
+        return eventTicketRepository.findAllByIsActiveTrue();
     }
 
     @Override
     public Optional<EventTicket> show(Long dataID) {
         return eventTicketRepository.findById(dataID);
     }
+
+    @Override
+    public int delete(Long dataID) {
+        EventTicket ticket = show(dataID).orElse(null);
+        if(ticket != null) {
+            ticket.setIsActive(false);
+            eventTicketRepository.save(ticket);
+            return 1;
+        }
+        return 0;
+    }
 }
+
+
+
+
+
+
+
+
