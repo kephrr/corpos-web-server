@@ -11,7 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Order(1)
-@Component
+//@Component
 @RequiredArgsConstructor
 public class EventTicketFixtures implements CommandLineRunner {
     private final EventTicketRepository repository;

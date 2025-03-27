@@ -12,7 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Order(0)
-@Component
+//@Component
 @RequiredArgsConstructor
 public class EventFixtures implements CommandLineRunner {
     private final EventRepository eventRepository;
