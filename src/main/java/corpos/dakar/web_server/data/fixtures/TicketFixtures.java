@@ -1,20 +1,19 @@
 package corpos.dakar.web_server.data.fixtures;
 
 import corpos.dakar.web_server.data.entites.Event;
-import corpos.dakar.web_server.data.entites.EventTicket;
+import corpos.dakar.web_server.data.entites.Ticket;
 import corpos.dakar.web_server.data.enums.TicketState;
-import corpos.dakar.web_server.data.repositories.EventRepository;
-import corpos.dakar.web_server.data.repositories.EventTicketRepository;
+import corpos.dakar.web_server.repositories.EventRepository;
+import corpos.dakar.web_server.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 @Order(1)
 //@Component
 @RequiredArgsConstructor
-public class EventTicketFixtures implements CommandLineRunner {
-    private final EventTicketRepository repository;
+public class TicketFixtures implements CommandLineRunner {
+    private final TicketRepository repository;
     private final EventRepository eventRepository;
     @Override
     public void run(String... args) throws Exception {
@@ -24,7 +23,7 @@ public class EventTicketFixtures implements CommandLineRunner {
 
         for(int i=0;i<names.length;i++) {
             Event e = eventRepository.findById((long) i%4).orElse(null);
-            repository.save(EventTicket.builder()
+            repository.save(Ticket.builder()
                             .name(names[i])
                             .email(emails[i])
                             .telephone(telephones[i])

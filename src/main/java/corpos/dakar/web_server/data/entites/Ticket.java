@@ -12,7 +12,7 @@ import lombok.*;
 @Setter
 @Builder
 @Table(name="event_ticket")
-public class EventTicket extends AbstractEntity{
+public class Ticket extends AbstractEntity{
     private String name;
     private String telephone;
     private String email;

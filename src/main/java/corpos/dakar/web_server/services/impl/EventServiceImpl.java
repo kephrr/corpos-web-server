@@ -1,8 +1,7 @@
 package corpos.dakar.web_server.services.impl;
 
 import corpos.dakar.web_server.data.entites.Event;
-import corpos.dakar.web_server.data.entites.EventTicket;
-import corpos.dakar.web_server.data.repositories.EventRepository;
+import corpos.dakar.web_server.repositories.EventRepository;
 import corpos.dakar.web_server.services.IEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

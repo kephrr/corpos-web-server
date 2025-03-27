@@ -1,19 +1,19 @@
 package corpos.dakar.web_server.api.controllers.impl;
 
-import corpos.dakar.web_server.api.controllers.EventController;
-import corpos.dakar.web_server.api.dto.request.EventCreateDto;
-import corpos.dakar.web_server.api.dto.response.EventDto;
+import corpos.dakar.web_server.api.controllers.TicketController;
+import corpos.dakar.web_server.api.dto.request.TicketCreateDto;
 import corpos.dakar.web_server.api.dto.response.RestResponseDto;
+import corpos.dakar.web_server.api.dto.response.TicketDto;
 import corpos.dakar.web_server.data.entites.Event;
+import corpos.dakar.web_server.data.entites.Ticket;
 import corpos.dakar.web_server.data.enums.DeleteResults;
-import corpos.dakar.web_server.services.impl.EventServiceImpl;
-import jakarta.validation.Valid;
+import corpos.dakar.web_server.services.IEventService;
+import corpos.dakar.web_server.services.ITicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -21,19 +21,19 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/events")
-public class EventControllerImpl implements EventController {
-    private final EventServiceImpl eventservice;
-
+@RequestMapping("/tickets")
+public class TicketControllerImpl implements TicketController {
+    private final ITicketService ticketService;
+    private final IEventService eventService;
     @Override
     public Map<Object, Object> index() {
-        List<EventDto> result = eventservice.findAll().stream().map(EventDto::toDto).toList();
+        List<TicketDto> result = ticketService.findAll().stream().map(TicketDto::toDto).toList();
         return RestResponseDto.response(result, HttpStatus.OK);
     }
 
     @Override
     public Map<Object, Object> pages(int page, int size) {
-        Page<EventDto> results = eventservice.findAll(PageRequest.of(page, size)).map(EventDto::toDto);
+        Page<TicketDto> results = ticketService.findAll(PageRequest.of(page, size)).map(TicketDto::toDto);
         return RestResponseDto.response(
                 results.getContent(),
                 new int[results.getTotalPages()],
@@ -46,20 +46,21 @@ public class EventControllerImpl implements EventController {
 
     @Override
     public Map<Object, Object> show(Long id) {
-        EventDto result = eventservice.show(id).map(EventDto::toDto).orElse(null);
+        Ticket result = ticketService.show(id).orElse(null);
         return RestResponseDto.response(result, HttpStatus.OK);
     }
 
     @Override
-    public Map<Object, Object> create(@Valid @RequestBody EventCreateDto dto,
-                                      BindingResult bindingResult) {
+    public Map<Object, Object> create(TicketCreateDto dto, BindingResult bindingResult) {
         Map<Object, Object> response;
         if (bindingResult.hasErrors()){
             response = BaseImpl.bindErrors(bindingResult);
         }else{
             try {
-                Event data = dto.toEntity();
-                eventservice.save(data);
+                Ticket data = dto.toEntity();
+                Event event = eventService.show(dto.getEventId()).orElse(null);
+                data.setEvent(event);
+                ticketService.save(data);
                 response= RestResponseDto.response(dto,HttpStatus.CREATED);
             }catch (Exception e) {
                 response= RestResponseDto.response(dto,HttpStatus.NOT_ACCEPTABLE);
@@ -74,12 +75,7 @@ public class EventControllerImpl implements EventController {
 
     @Override
     public Map<Object, Object> delete(Long id) {
-        int isDeleted = eventservice.delete(id);
+        int isDeleted = ticketService.delete(id);
         return RestResponseDto.response(DeleteResults.values()[isDeleted], HttpStatus.OK);
     }
 }
-
-
-
-
-

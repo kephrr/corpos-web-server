@@ -17,6 +17,7 @@ import lombok.*;
 @Table(name="event")
 public class Event extends AbstractEntity{
     private String libelle;
+    private String description;
     @Enumerated(EnumType.STRING)
     private EventState state;
     @Temporal(TemporalType.DATE)
@@ -24,7 +25,7 @@ public class Event extends AbstractEntity{
     private Date date;
     private Double duration;
     @OneToMany(mappedBy = "event")
-    List<EventTicket> tickets;
+    List<Ticket> tickets;
 }
 
 

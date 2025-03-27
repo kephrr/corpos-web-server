@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class EventDto {
     private String libelle;
+    private String description;
     private String date;
     private Double duration;
     private String state;
@@ -17,6 +18,7 @@ public class EventDto {
     public static EventDto toDto(Event e){
         return EventDto.builder()
                 .libelle(e.getLibelle())
+                .description(e.getDescription())
                 .date(e.getDate().toString())
                 .duration(e.getDuration())
                 .state(e.getState().toString())

@@ -1,13 +1,13 @@
 package corpos.dakar.web_server.api.controllers;
 
-import corpos.dakar.web_server.api.dto.request.EventCreateDto;
+import corpos.dakar.web_server.api.dto.request.TicketCreateDto;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-public interface EventController {
+public interface TicketController {
     @GetMapping("")
     Map<Object, Object> index();
 
@@ -22,7 +22,7 @@ public interface EventController {
 
     @PostMapping("")
     Map<Object, Object> create(
-            @Valid @RequestBody EventCreateDto eventCreateDto,
+            @Valid @RequestBody TicketCreateDto dto,
             BindingResult bindingResult
             );
 

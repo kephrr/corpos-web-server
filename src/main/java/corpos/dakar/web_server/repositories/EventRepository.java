@@ -1,4 +1,4 @@
-package corpos.dakar.web_server.data.repositories;
+package corpos.dakar.web_server.repositories;
 
 import corpos.dakar.web_server.data.entites.Event;
 import org.springframework.data.domain.Page;

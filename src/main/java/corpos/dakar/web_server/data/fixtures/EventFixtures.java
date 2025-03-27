@@ -5,11 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import corpos.dakar.web_server.data.entites.Event;
 import corpos.dakar.web_server.data.enums.EventState;
-import corpos.dakar.web_server.data.repositories.EventRepository;
+import corpos.dakar.web_server.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 @Order(0)
 //@Component
