@@ -1,8 +1,7 @@
 package corpos.dakar.web_server.data.entites;
 
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import corpos.dakar.web_server.data.enums.TicketState;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -17,6 +16,16 @@ public class EventTicket extends AbstractEntity{
     private String name;
     private String telephone;
     private String email;
+    @Enumerated(EnumType.STRING)
+    private TicketState state;
     @ManyToOne
     private Event event;
 }
+
+
+
+
+
+
+
+

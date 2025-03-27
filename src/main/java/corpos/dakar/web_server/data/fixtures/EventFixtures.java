@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import corpos.dakar.web_server.data.entites.Event;
+import corpos.dakar.web_server.data.enums.EventState;
 import corpos.dakar.web_server.data.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +30,7 @@ public class EventFixtures implements CommandLineRunner {
                 eventRepository.save(Event.builder()
                                 .libelle(events[i])
                                 .date(date)
+                                .state(EventState.values()[(i+1)%5])
                                 .duration(durees[i])
                         .build());
             } catch (ParseException e) {
