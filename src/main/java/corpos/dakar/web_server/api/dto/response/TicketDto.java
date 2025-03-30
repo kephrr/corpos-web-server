@@ -14,6 +14,7 @@ public class TicketDto {
     private String email;
     private String event;
     private String state;
+    private String orderingDate;
 
     public static TicketDto toDto(Ticket ticket) {
         String event = "Indéfini";
@@ -26,6 +27,7 @@ public class TicketDto {
                 .email(ticket.getEmail())
                 .event(event)
                 .state(ticket.getState().toString())
+                .orderingDate(ticket.getOrderingDate().toString())
                 .build();
     }
 }
