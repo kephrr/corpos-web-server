@@ -7,4 +7,7 @@ import java.util.Map;
 public interface AnalyticsController {
     @GetMapping("/resume")
     Map<Object, Object> resume();
+
+    @GetMapping("/notificaitons")
+    Map<Object, Object> notifications();
 }

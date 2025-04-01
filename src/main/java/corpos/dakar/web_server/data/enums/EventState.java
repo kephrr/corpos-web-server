@@ -8,9 +8,9 @@ import lombok.Getter;
 public enum EventState {
     Created(1),
     Available(2),
-    Public(3),
-    Private(4),
-    Resumed(5);
+    Resumed(3),
+    Unavailable(4),
+    EnCours(5);
     private final Integer index;
 }
 

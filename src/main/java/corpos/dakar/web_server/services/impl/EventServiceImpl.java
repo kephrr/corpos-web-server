@@ -1,6 +1,7 @@
 package corpos.dakar.web_server.services.impl;
 
 import corpos.dakar.web_server.data.entites.Event;
+import corpos.dakar.web_server.data.enums.EventState;
 import corpos.dakar.web_server.repositories.EventRepository;
 import corpos.dakar.web_server.services.IEventService;
 import lombok.RequiredArgsConstructor;
@@ -45,4 +46,21 @@ public class EventServiceImpl implements IEventService {
         }
         return 0;
     }
+
+    @Override
+    public boolean checkCurrentEvent() {
+        for(Event event : findAll()){
+            if(event.getState()== EventState.EnCours) {
+                return true;
+            }
+        };
+        return false;
+    }
 }
+
+
+
+
+
+
+
