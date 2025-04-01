@@ -7,6 +7,7 @@ import corpos.dakar.web_server.api.dto.response.TicketDto;
 import corpos.dakar.web_server.data.entites.Event;
 import corpos.dakar.web_server.data.entites.Ticket;
 import corpos.dakar.web_server.data.enums.DeleteResults;
+import corpos.dakar.web_server.data.enums.TicketState;
 import corpos.dakar.web_server.services.IEventService;
 import corpos.dakar.web_server.services.ITicketService;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,9 @@ public class TicketControllerImpl implements TicketController {
     }
 
     @Override
-    public Map<Object, Object> pages(int page, int size) {
-        Page<TicketDto> results = ticketService.findAll(PageRequest.of(page, size)).map(TicketDto::toDto);
+    public Map<Object, Object> pages(int page, int size, Integer state, Long eventId) {
+        Event event = eventService.show(eventId).orElse(null);
+        Page<TicketDto> results = ticketService.findAll(PageRequest.of(page, size), TicketState.values()[state],event).map(TicketDto::toDto);
         return RestResponseDto.response(
                 results.getContent(),
                 new int[results.getTotalPages()],

@@ -14,7 +14,8 @@ public interface EventController {
     @GetMapping("/paginate")
     Map<Object, Object> pages(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) Integer state
     );
 
     @GetMapping("/{id}")

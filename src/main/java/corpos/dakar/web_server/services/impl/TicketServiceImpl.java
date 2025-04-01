@@ -1,7 +1,10 @@
 package corpos.dakar.web_server.services.impl;
 
 import corpos.dakar.web_server.Config;
+import corpos.dakar.web_server.data.entites.Event;
 import corpos.dakar.web_server.data.entites.Ticket;
+import corpos.dakar.web_server.data.enums.EventState;
+import corpos.dakar.web_server.data.enums.TicketState;
 import corpos.dakar.web_server.repositories.TicketRepository;
 import corpos.dakar.web_server.services.ITicketService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,11 @@ public class TicketServiceImpl extends BaseImpl implements ITicketService {
     @Override
     public Page<Ticket> findAll(Pageable pageable) {
         return ticketRepository.findAllByIsActiveTrue(pageable);
+    }
+
+    @Override
+    public Page<Ticket> findAll(Pageable pageable, TicketState state, Event event) {
+        return ticketRepository.findAllByIsActiveTrue(pageable, state, event);
     }
 
     @Override
@@ -58,6 +66,8 @@ public class TicketServiceImpl extends BaseImpl implements ITicketService {
         }
         return count;
     }
+
+
 }
 
 

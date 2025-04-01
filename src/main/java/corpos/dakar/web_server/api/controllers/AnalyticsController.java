@@ -8,6 +8,6 @@ public interface AnalyticsController {
     @GetMapping("/resume")
     Map<Object, Object> resume();
 
-    @GetMapping("/notificaitons")
+    @GetMapping("/notifications")
     Map<Object, Object> notifications();
 }

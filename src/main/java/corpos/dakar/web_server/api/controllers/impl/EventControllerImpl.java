@@ -6,6 +6,7 @@ import corpos.dakar.web_server.api.dto.response.EventDto;
 import corpos.dakar.web_server.api.dto.response.RestResponseDto;
 import corpos.dakar.web_server.data.entites.Event;
 import corpos.dakar.web_server.data.enums.DeleteResults;
+import corpos.dakar.web_server.data.enums.EventState;
 import corpos.dakar.web_server.services.impl.EventServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +24,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/events")
 public class EventControllerImpl implements EventController {
-    private final EventServiceImpl eventservice;
+    private final EventServiceImpl eventService;
 
     @Override
     public Map<Object, Object> index() {
-        List<EventDto> result = eventservice.findAll().stream().map(EventDto::toDto).toList();
+        List<EventDto> result = eventService.findAll().stream().map(EventDto::toDto).toList();
         return RestResponseDto.response(result, HttpStatus.OK);
     }
 
     @Override
-    public Map<Object, Object> pages(int page, int size) {
-        Page<EventDto> results = eventservice.findAll(PageRequest.of(page, size)).map(EventDto::toDto);
+    public Map<Object, Object> pages(int page, int size, Integer state) {
+        Page<EventDto> results = eventService.findAll(PageRequest.of(page, size), EventState.values()[state]).map(EventDto::toDto);
         return RestResponseDto.response(
                 results.getContent(),
                 new int[results.getTotalPages()],
@@ -46,7 +47,7 @@ public class EventControllerImpl implements EventController {
 
     @Override
     public Map<Object, Object> show(Long id) {
-        EventDto result = eventservice.show(id).map(EventDto::toDto).orElse(null);
+        EventDto result = eventService.show(id).map(EventDto::toDto).orElse(null);
         return RestResponseDto.response(result, HttpStatus.OK);
     }
 
@@ -59,7 +60,7 @@ public class EventControllerImpl implements EventController {
         }else{
             try {
                 Event data = dto.toEntity();
-                eventservice.save(data);
+                eventService.save(data);
                 response= RestResponseDto.response(dto,HttpStatus.CREATED);
             }catch (Exception e) {
                 response= RestResponseDto.response(dto,HttpStatus.NOT_ACCEPTABLE);
@@ -74,7 +75,7 @@ public class EventControllerImpl implements EventController {
 
     @Override
     public Map<Object, Object> delete(Long id) {
-        int isDeleted = eventservice.delete(id);
+        int isDeleted = eventService.delete(id);
         return RestResponseDto.response(DeleteResults.values()[isDeleted], HttpStatus.OK);
     }
 }

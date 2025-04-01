@@ -21,6 +21,7 @@ public class EventFixtures implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         String[] events = {"Match de GALA","Match d'ouverture féminin","Tournoi EFOULAME","Camp d'entrainement V2","Match de Met","Match de fermeture féminin","Cup EFOULAME","Training Camp"};
+        String[] description = {"Match amical de gala avec des stars internationales", "Première rencontre du championnat féminin", "TDernier match de la saison féminine", "Compétition annuelle de football local", "Deuxième session de préparation intensive", "Rencontre contre l'équipe rivale de Metropolis", "Phase finale du tournoi EFOULAME", "Session d'entraînement technique avancé"};
         String[] dates = {"30-03-2025", "10-04-2025","24-04-2025","02-05-2025","30-03-2025", "10-04-2025","24-04-2025","02-05-2025"};
         Double[] durees = {4.0, 4.0, 10.0, 8.5,4.0, 10.0, 8.5,1.75};
 
@@ -28,11 +29,12 @@ public class EventFixtures implements CommandLineRunner {
         for (int i = 0; i < events.length; i++) {
             try {
                 Date date = formatter.parse(dates[i]);
-                System.out.println("Date convertie: " + date);
+                System.out.println("Date convertie: " + date.toString());
                 eventRepository.save(Event.builder()
                                 .libelle(events[i])
                                 .date(date)
                                 .state(EventState.values()[(i+1)%5])
+                                .description(description[i])
                                 .duration(durees[i])
                         .build());
             } catch (ParseException e) {

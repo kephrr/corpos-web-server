@@ -27,6 +27,11 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
+    public Page<Event> findAll(Pageable pageable, EventState state) {
+        return eventRepository.findAllByIsActiveTrue(pageable, state);
+    }
+
+    @Override
     public List<Event> findAll() {
         return eventRepository.findAllByIsActiveTrue();
     }
@@ -56,6 +61,7 @@ public class EventServiceImpl implements IEventService {
         };
         return false;
     }
+
 }
 
 
