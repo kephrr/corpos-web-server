@@ -11,6 +11,7 @@ import corpos.dakar.web_server.services.impl.EventServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +36,26 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public Map<Object, Object> pages(int page, int size, Integer state) {
-        Page<EventDto> results = eventService.findAll(PageRequest.of(page, size), EventState.values()[state]).map(EventDto::toDto);
+    public Map<Object, Object> pages(int page, int size, Integer state,String keyword) {
+        Page<Event> eventPage = eventService.findAll(
+                PageRequest.of(page, size),
+                state == null ? null : EventState.values()[state]
+        );
+
+        // Filtrer et mapper le contenu
+        List<EventDto> filteredContent = eventPage.getContent().stream()
+                .filter(event -> keyword == null
+                        || event.getLibelle().contains(keyword)
+                        || event.getDescription().contains(keyword))
+                .map(EventDto::toDto)
+                .collect(Collectors.toList());
+
+        // Reconstruire la Page<EventDto> avec les métadonnées originales
+        Page<EventDto> results = new PageImpl<>(
+                filteredContent,
+                eventPage.getPageable(),
+                eventPage.getTotalElements()
+        );
         return RestResponseDto.response(
                 results.getContent(),
                 new int[results.getTotalPages()],

@@ -44,12 +44,11 @@ public class EventServiceImpl implements IEventService {
     @Override
     public int delete(Long dataID) {
         Event event = show(dataID).orElse(null);
-        if(event != null) {
+        if(event != null && event.getIsActive()) {
             event.setIsActive(false);
             eventRepository.save(event);
             return 1;
-        }
-        return 0;
+        }else return 0;
     }
 
     @Override

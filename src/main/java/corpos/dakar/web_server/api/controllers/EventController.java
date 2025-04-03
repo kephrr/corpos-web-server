@@ -15,7 +15,8 @@ public interface EventController {
     Map<Object, Object> pages(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(required = false) Integer state
+            @RequestParam(required = false) Integer state,
+            @RequestParam(required = false) String keyword
     );
 
     @GetMapping("/{id}")
