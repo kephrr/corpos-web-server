@@ -2,11 +2,13 @@ package corpos.dakar.web_server.api.controllers.impl;
 
 import corpos.dakar.web_server.api.controllers.TicketController;
 import corpos.dakar.web_server.api.dto.request.TicketCreateDto;
+import corpos.dakar.web_server.api.dto.response.EventDto;
 import corpos.dakar.web_server.api.dto.response.RestResponseDto;
 import corpos.dakar.web_server.api.dto.response.TicketDto;
 import corpos.dakar.web_server.data.entites.Event;
 import corpos.dakar.web_server.data.entites.Ticket;
 import corpos.dakar.web_server.data.enums.DeleteResults;
+import corpos.dakar.web_server.data.enums.EventState;
 import corpos.dakar.web_server.data.enums.TicketState;
 import corpos.dakar.web_server.services.IEventService;
 import corpos.dakar.web_server.services.ITicketService;
@@ -33,9 +35,10 @@ public class TicketControllerImpl implements TicketController {
     }
 
     @Override
-    public Map<Object, Object> pages(int page, int size, Integer state, Long eventId) {
-        Event event = eventService.show(eventId).orElse(null);
-        Page<TicketDto> results = ticketService.findAll(PageRequest.of(page, size), TicketState.values()[state],event).map(TicketDto::toDto);
+    public Map<Object, Object> pages(int page, int size, Integer state) {
+        Page<TicketDto> results = ticketService.findAll(PageRequest.of(page, size),
+                state == null ? null : TicketState.values()[state], null)
+                .map(TicketDto::toDto);
         return RestResponseDto.response(
                 results.getContent(),
                 new int[results.getTotalPages()],
@@ -80,4 +83,28 @@ public class TicketControllerImpl implements TicketController {
         int isDeleted = ticketService.delete(id);
         return RestResponseDto.response(DeleteResults.values()[isDeleted], HttpStatus.OK);
     }
+
+    @Override
+    public Map<Object, Object> invalidate(Long id) {
+        Ticket t = ticketService.show(id).orElse(null);
+        assert t != null;
+        if(t.getState()==TicketState.Valid) {
+            t.setState(TicketState.Invalid);
+            ticketService.save(t);
+            return RestResponseDto.response("Reservation invalidée avec succès", HttpStatus.OK);
+        }else {
+            t.setState(TicketState.Valid);
+            ticketService.save(t);
+            return RestResponseDto.response("Reservation validée avec succès", HttpStatus.OK);
+        }
+    }
 }
+
+
+
+
+
+
+
+
+

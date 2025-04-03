@@ -15,8 +15,7 @@ public interface TicketController {
     Map<Object, Object> pages(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(required = false) Integer state,
-            @RequestParam(required = false) Long event
+            @RequestParam(required = false) Integer state
     );
 
     @GetMapping("/{id}")
@@ -30,6 +29,9 @@ public interface TicketController {
 
     @GetMapping("/delete/{id}")
     Map<Object, Object> delete(@PathVariable Long id);
+
+    @GetMapping("/invalidate/{id}")
+    Map<Object, Object> invalidate(@PathVariable Long id);
 }
 
 
