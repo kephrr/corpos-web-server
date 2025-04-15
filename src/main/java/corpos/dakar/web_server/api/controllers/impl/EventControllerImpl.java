@@ -56,12 +56,15 @@ public class EventControllerImpl implements EventController {
                 eventPage.getPageable(),
                 eventPage.getTotalElements()
         );
+
         return RestResponseDto.response(
                 results.getContent(),
                 new int[results.getTotalPages()],
-                page,
-                results.getTotalElements(),
                 results.getTotalPages(),
+                results.getTotalElements(),
+                page,
+                results.hasNext()?page+1:null,
+                page-1<0?null:page-1,
                 HttpStatus.OK
         );
     }

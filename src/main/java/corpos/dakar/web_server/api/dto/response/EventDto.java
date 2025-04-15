@@ -14,6 +14,7 @@ public class EventDto {
     private String date;
     private Double duration;
     private String state;
+    private Integer stateIndex;
 
     public static EventDto toDto(Event e){
         return EventDto.builder()
@@ -22,6 +23,7 @@ public class EventDto {
                 .date(e.getDate().toString())
                 .duration(e.getDuration())
                 .state(e.getState().toString())
+                .stateIndex(e.getState().getIndex())
                 .build();
     }
 }
